@@ -1,0 +1,17 @@
+class Grid {
+    data = []
+    
+    constructor(scale){
+        for(let r = 0; r < scale; r++){
+            const row = []
+            for(let c = 0; c < scale; c++){
+                row.push()
+            }
+        }
+    }
+    
+
+
+}
+
+export default Grid
