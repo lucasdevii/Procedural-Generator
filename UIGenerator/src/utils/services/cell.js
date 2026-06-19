@@ -1,11 +1,12 @@
 class Cell {
-    constructor(){
-        for(let r = 0; r < scale; r++){
-            const row = []
-            for(let c = 0; c < scale; c++){
-                row.push()
-            }
-        }
+    data = { right: false, left: false, top: false, bottom: false }
+
+    setData({right = false, left = false, top = false, bottom = false}){
+        this.data = {right, left, top, bottom}
+    }
+
+    getData(){
+        return this.data
     }
 }
 

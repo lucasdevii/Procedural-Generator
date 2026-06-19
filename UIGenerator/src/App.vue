@@ -1,89 +1,34 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import wilsonMazeCreate from './utils/algorithms/pg_simple/wilson'
+import { drawInitialCanvas } from './utils/services/canvas'
+import Grid from './utils/services/grid'
 
 const canvas = ref(null)
-const data = ref([])
+const grid = ref([])
 
 const types = {
-  maze : 'Maze',
+  Wilson : 'Wilson',
   maze_rooms : 'Maze_rooms',
   BSP : 'BSP'
 }
 
-const seed = ref(192741203612073)
-const cordY = ref(0)
-const cordX = ref(0)
-const algorithm = ref(types.maze)
+// const seed = ref(192741203612073)
+// const cordY = ref(0)
+// const cordX = ref(0)
+const algorithm = ref(types.Wilson)
 
 const cellQuantity = ref(16)
 const cellSize = ref(null)
 
-const inicializationData = () => {
-  for(let row = 0; row < cellQuantity.value; row++){
-    const row = []
-
-    for(let col = 0; col < cellQuantity.value; col++){
-      row.push({})
-    }
-
-    data.value.push(row)
-  }
-}
-
-const noise = () => {
-  const value = Math.sin(
-    seed.value * 423341.122 +
-    cordX.value * 981276.34 +
-    cordY.value * 5123 * 2.23
-  )
-  console.log(value)
-  return value
-}
-const connect = (a, b, direction) => {
-  switch(direction){
-    case 'left': 
-      a.left = false;
-      b.right = false;
-    break
-    case 'right': 
-      a.right = false;
-      b.left = false;
-    break
-    case 'top': 
-      a.top = false;
-      b.bottom = false;
-    break
-    case 'bottom': 
-      a.bottom = false;
-      b.top = false;
-    break
-    default:
-      console.log("INPUT INVÁLIDO.")
-    break
-  }
-}
-
-const mazeCreator = () => {
-
-} 
-const mazeRoomsCreator = () => {
-
-}
-const BSPCreator = () => {
-  
-}
-
-const drawInitialCanvas = (ctx) => {
-  ctx.strokeStyle = 'black'
-  for(let row = 0; row < cellQuantity.value; row++){
-    for(let col = 0; col < cellQuantity.value; col++){
-      ctx.strokeRect(col * cellSize.value, row * cellSize.value, cellSize.value, cellSize.value)
-    }
+const useAlgorithm = () => {
+  if(algorithm.value === types.Wilson){
+    wilsonMazeCreate()
   }
 }
 
 onMounted(() => {  
-  const {width, height} = canvas.value.getBoundingClientRect()
+  const  { width, height } = canvas.value.getBoundingClientRect()
 
   canvas.value.width = width
   canvas.value.height = height
@@ -92,8 +37,8 @@ onMounted(() => {
   
   const ctx = canvas.value.getContext('2d')
 
-  inicializationData()
-  drawInitialCanvas(ctx)
+  const grid = new Grid(cellQuantity.value)
+  drawInitialCanvas(ctx, cellQuantity.value, cellSize.value)
 })
 
 </script>
@@ -103,18 +48,18 @@ onMounted(() => {
     <div class="render">
 
         <div>
-          <label for="">Seed</label>
+          <!-- <label for="">Seed</label>
           <input type="number" v-model="seed">
           
           <label for="">Coordenada em X</label>
           <input type="number" v-model="cordX">
 
           <label for="">Coordenada em Y</label>
-          <input type="number" v-model="cordY">
+          <input type="number" v-model="cordY"> -->
 
           <label for="">Algoritmo</label>
           <select v-model="algorithm">
-            <option>Maze</option>
+            <option>Wilson</option>
             <option>Maze Rooms</option>
             <option>BSP</option>
           </select>
@@ -122,7 +67,7 @@ onMounted(() => {
 
         <div class="submit">
 
-          <button>Renderizar</button>
+          <button @click="useAlgorithm">Renderizar</button>
 
         </div>
 
