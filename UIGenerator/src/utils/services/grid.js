@@ -12,26 +12,47 @@ class Grid {
         }
     }
 
-    connect = (a, b, direction) => {
+    /**
+     * Basicamente diz para qual direção uma determinada celula vai se conectar com outra
+     * @param {Cell} a 
+     * @param {Cell} b 
+     * @param {String} direction 
+     * @returns {Boolean} success
+     * 
+     */
+    connect = (x, y, direction) => {
         if(direction === 'left'){
-            a.left = true;
-            b.right = true;
+            if(x == 0){
+                return false
+            }
+            this.data[y][x].left = true;
+            this.data[y][x - 1].right = true;
         }
 
         if(direction === 'right'){
-            a.right = true;
-            b.left = true;
+            if(x == this.data.length - 1){
+                return false
+            }
+            this.data[y][x].right = true;
+            this.data[y][x + 1].left = true;
         }
 
         if(direction === 'top'){
-            a.top = true;
-            b.bottom = true;
+            if(y == 0){
+                return false
+            }
+            this.data[y][x].top = true;
+            this.data[y - 1][x].bottom = true;
         }
 
         if(direction === 'bottom'){
-            a.bottom = true;
-            b.top = true;
+            if(y == this.data.length - 1){
+                return false
+            }
+            this.data[y][x].bottom = true;
+            this.data[y + 1][x].top = true;
         }
+        return true
     }
 
     getData(){
@@ -43,7 +64,7 @@ class Grid {
     }
 
     getRandomIndex(){
-        const scale = this.data.length
+        const scale = this.data[y][x].length
 
         const randomX = Math.floor(Math.random() * scale)
         const randomY = Math.floor(Math.random() * scale)
